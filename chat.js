@@ -10,7 +10,7 @@ const newMessage = async (history, message) => {
   const results = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo',
     messages: [...history, message],
-    temperature: 2,
+    temperature: 0,
   })
 
   return results.choices[0].message
@@ -33,11 +33,17 @@ const chat = () => {
         return
       }
 
+      console.log('debug 1')
+
       const message = formatMessage(userInput)
       const response = await newMessage(history, message)
+      console.log('debug 2')
 
       history.push(message, response)
-      console.log(`\n\nAI: ${response.content}:\n\n`)
+      console.log('debug 3')
+
+      console.log(response)
+      console.log(`\n\nAI: ${response.content}\n\n`)
       start()
     })
   }
