@@ -1,5 +1,5 @@
-import { openai } from './openai.js'
-import { Document } from 'langchain/Document'
+import 'dotenv/config'
+import { Document } from 'langchain/document'
 import { MemoryVectorStore } from 'langchain/vectorstores/memory'
 import { OpenAIEmbeddings } from 'langchain/embeddings/openai'
 
@@ -55,3 +55,17 @@ const createStore = () =>
     ),
     new OpenAIEmbeddings()
   )
+
+const search = async (query, count = 1) => {
+  const store = await createStore()
+  return store.similaritySearch(query, count)
+}
+
+const searchWithScore = async (query, count = 5) => {
+  const store = await createStore()
+  return store.similaritySearchWithScore(query, count)
+}
+
+console.log(
+  await searchWithScore('a movie that will make me feel like I am crazy')
+)
