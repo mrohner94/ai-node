@@ -12,9 +12,12 @@ const messages = [
 
 const functions = {
   calculate: async ({ expression }) => {
-    console.log('hello')
-    console.log(expression)
     return math.evaluate(expression)
+  },
+  async generateImage({ prompt }) {
+    const result = await openai.images.generate({ prompt })
+    console.log(result.data[0].url)
+    return ''
   },
 }
 const getCompletion = async (messages) => {
@@ -36,6 +39,20 @@ const getCompletion = async (messages) => {
             },
           },
           required: ['expression'],
+        },
+      },
+      {
+        name: 'generateImage',
+        description: 'Creates or generate image based on a description',
+        parameters: {
+          type: 'object',
+          properties: {
+            prompt: {
+              type: 'string',
+              description: 'The description of the image to generate.',
+            },
+          },
+          required: ['prompt'],
         },
       },
     ],
